@@ -1,6 +1,6 @@
 <template>
-    <div class="input-body">
-        <input type="text" name="memoBody" id="memoBody" v-model="inputValue" @keydown.enter="emitSaveTask">
+    <div class="input-body flex">
+        <input type="text" name="memoBody" id="memoBody" v-model="inputValue" @keydown.enter="saveTask">
         <button type="button" @click="emitSaveTask">タスクを登録する</button>
     </div>
 </template>
@@ -22,13 +22,19 @@ export default {
             }
         }
     },
+    methods: {
+        saveTask: function( ev ) {
+            // 日本語入力中(keyCode:229)は送信しないようにする
+            if( ev.keyCode !== 13 ) return;
+            this.emitSaveTask();
+        },
+    },
 }
 </script>
 
 <style lang="scss">
 .input-body {
     margin: 24px auto;
-    display: flex;
 
     #memoBody {
         width: 300px;

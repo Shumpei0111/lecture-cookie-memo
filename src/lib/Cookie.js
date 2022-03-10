@@ -62,6 +62,27 @@ class CookieManager {
         }
         return null;
     }
+
+    clearAllTasks() {
+        const _tasks = Cookies.get( this.taskKey );
+        
+        if( _tasks ) {
+            Cookies.remove( this.taskKey );
+        }
+    }
+
+    clearAllHistory() {
+        const _history = Cookies.get( this.historyKey );
+
+        if( _history ) {
+            Cookies.remove( this.historyKey );
+        }
+    }
+
+    allClear() {
+        this.clearAllTasks();
+        this.clearAllHistory();
+    }
 }
 
 export const cookieManager = new CookieManager;

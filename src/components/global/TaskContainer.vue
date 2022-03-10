@@ -1,8 +1,10 @@
 <template>
     <div id="taskContainer">
         <input-body v-model="inputValue" :emit-save-task="saveTask" />
-        <list :all-tasks="allTasks" :emit-finish-task="finishTask" />
-        <history :history="history" :task-pairs="taskPairs" />
+        <div class="app-body">
+            <list :all-tasks="allTasks" :emit-finish-task="finishTask" :clear-all-tasks="clearAllTasks" />
+            <history :history="history" :task-pairs="taskPairs" :clear-all-history="clearAllHistory" />
+        </div>
     </div>
 </template>
 
@@ -43,20 +45,29 @@ export default {
     },
     methods: {
         saveTask: function() {
+            if( this.inputValue === "" ) return;
+
             const task = new Task( this.inputValue );
-
             taskContainer.addTask( task );
-
             this.inputValue = "";
         },
 
         finishTask: function( event, id ) {
             taskContainer.finishTask( event, id );
         },
+
+        clearAllTasks: function() {
+            taskContainer.allClear();
+            cookieManager.allClear();
+        },
+
+        clearAllHistory: function() {
+            taskContainer.clearAllHistory();
+            cookieManager.clearAllHistory();
+        },
         
         initHistory: function() {
             const loadTasks = cookieManager.loadTasks();
-            console.log(loadTasks);
             const loadHistory = cookieManager.loadHistory();
 
             if( loadTasks && loadTasks.length > 0 || loadTasks ) {
@@ -78,3 +89,13 @@ export default {
 
 }
 </script>
+
+
+<style lang="scss">
+#taskContainer {
+
+    .app-body {
+        display: flex;
+    }
+}
+</style>

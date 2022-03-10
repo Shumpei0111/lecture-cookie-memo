@@ -1,6 +1,9 @@
 <template>
     <div class="list">
-        <h3>タスクリスト</h3>
+        <div class="mb flex align-item-center">
+            <h3>タスクリスト</h3>
+            <button class="clear-button align-item-center" @click="clearAllTasks">タスク全消去</button>
+        </div>
         <ul class="task">
             <li class="task__item" v-for="task in allTasks" :key="task.id">
                 <div class="task__body">
@@ -25,11 +28,11 @@ export default {
     name: "List",
     props: {
         allTasks: Array,
-        emitFinishTask: Function
+        emitFinishTask: Function,
+        clearAllTasks: Function,
     },
     watch: {
         allTasks: function( newArr ) {
-            console.log("change");
             cookieManager.setActiveTask( newArr );
         },
     },
@@ -44,6 +47,7 @@ export default {
 <style lang="scss">
 .list {
     margin-bottom: 24px;
+    width: 50%;
 
     .task {
 
