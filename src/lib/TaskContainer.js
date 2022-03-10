@@ -12,13 +12,10 @@ export class TaskContainer {
     finishTask( checked, id ) {
         const self = this;
 
-        self.allTasks.filter( task => {
-            return task.id === id;
-        } )
-        .map( task => {
-            task.isFinish = true;
-            return task;
-        } );
+        let index = self.allTasks.findIndex( task => task.id === id );
+        let finishTask = self.allTasks[ index ];
+        finishTask.isFinish =! finishTask.isFinish;
+        self.allTasks.splice( index, 1, finishTask );
 
         for( let i = 0, len = self.history.length; i < len; i++ ) {
             let task = self.history[ i ];

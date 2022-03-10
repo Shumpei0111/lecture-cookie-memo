@@ -13,6 +13,7 @@ import InputBody from '@/components/ui/InputBody.vue';
 
 import { TaskContainer } from '../../lib/TaskContainer.js';
 import { Task } from '../../lib/Task.js';
+import { cookieManager } from '../../lib/Cookie.js';
 
 const taskContainer = new TaskContainer();
 
@@ -51,7 +52,28 @@ export default {
 
         finishTask: function( event, id ) {
             taskContainer.finishTask( event, id );
-        }
+        },
+        
+        initHistory: function() {
+            const loadTasks = cookieManager.loadTasks();
+            console.log(loadTasks);
+            const loadHistory = cookieManager.loadHistory();
+
+            if( loadTasks && loadTasks.length > 0 || loadTasks ) {
+                loadTasks.map( task => {
+                    taskContainer.allTasks.push( task );
+                } );
+            }
+
+            if( loadHistory && loadHistory.length > 0 || loadHistory ) {
+                loadHistory.map( task => {
+                    taskContainer.history.push( task );
+                } );
+            }
+        },
+    },
+    mounted: function() {
+        this.initHistory();
     },
 
 }

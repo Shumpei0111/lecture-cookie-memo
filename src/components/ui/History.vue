@@ -10,11 +10,18 @@
 </template>
 
 <script>
+import { cookieManager } from '../../lib/Cookie.js';
+
 export default {
     name: "History",
     props: {
         history: Array,
         taskPairs: Array,
+    },
+    watch: {
+        history: function( newArr ) {
+            cookieManager.setHistory( newArr );
+        },
     },
     methods: {
         getInputBody: function( id ) {
