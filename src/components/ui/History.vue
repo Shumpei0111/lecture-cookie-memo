@@ -1,9 +1,9 @@
 <template>
     <div class="history">
         <h3>履歴</h3>
-        <ul>
-            <li v-for="task in history" :key="task.id">
-                <p><span class="bold">{{ getInputBody( task.id ) }}</span>を<span class="bold">{{ getStatusText( task ) }}</span>しました</p>
+        <ul class="task-history">
+            <li class="task-history__item" v-for="( task, index ) in history" :key="index">
+                <div class="task-history__body"><span class="bold">{{ getInputBody( task.id ) }}</span>を<span class="bold">{{ getStatusText( task ) }}</span>しました</div>
             </li>
         </ul>
     </div>
@@ -20,18 +20,19 @@ export default {
         getInputBody: function( id ) {
             const taskPairs = this.taskPairs.slice();
             const res = taskPairs.filter( task => {
-                console.log(task, id);
                 return task.id === id;
             } );
             return res[0].inputBody;
         },
         getStatusText: function( task ) {
-            console.log(task);
-            if( task.state === "add" ) {
+            if( task.status === "add" ) {
                 return "追加";
             }
-            if( task.state === "finish" ) {
+            if( task.status === "finish" ) {
                 return "完了";
+            }
+            if( task.status === "back" ) {
+                return "復帰";
             }
         },
     }
@@ -39,7 +40,7 @@ export default {
 </script>
 
 <style lang="scss">
-.bold {
-    font-weight: bold;
+.history {
+    margin-bottom: 24px;
 }
 </style>

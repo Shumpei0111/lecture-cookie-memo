@@ -5,24 +5,28 @@ export class TaskContainer {
     }
 
     addTask( task ) {
-        this.allTasks.push( task );
-        this.history.push( { id: task.id, state: "add" } );
+        this.allTasks.unshift( task );
+        this.history.unshift( { id: task.id, status: "add"} );
     }
 
-    finishTask( id ) {
-        this.allTasks.filter( task => {
+    finishTask( checked, id ) {
+        const self = this;
+
+        self.allTasks.filter( task => {
             return task.id === id;
         } )
         .map( task => {
             task.isFinish = true;
             return task;
         } );
-    
-        this.history.filter( task => {
-            return task.id === id;
-        } )
-        .map( task => {
-            task.state = "finish";
-        } );
+
+        for( let i = 0, len = self.history.length; i < len; i++ ) {
+            let task = self.history[ i ];
+            if( task.id === id ) {
+                const status = checked === true ? "finish" : "back";
+                self.history.unshift( { id: task.id, status: status } );
+                break;
+            }
+        }
     }
 }

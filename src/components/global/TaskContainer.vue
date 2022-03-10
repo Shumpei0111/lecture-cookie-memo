@@ -1,8 +1,8 @@
 <template>
     <div id="taskContainer">
-        <input-body v-model="inputValue" :parent-method="saveTask" />
-        <list :all-tasks="reverseAllTasks" />
-        <history :history="reverseHistory" :task-pairs="taskPairs" />
+        <input-body v-model="inputValue" :emit-save-task="saveTask" />
+        <list :all-tasks="allTasks" :emit-finish-task="finishTask" />
+        <history :history="history" :task-pairs="taskPairs" />
     </div>
 </template>
 
@@ -39,12 +39,6 @@ export default {
                 }
             } );
         },
-        reverseAllTasks: function() {
-            return this.allTasks.reverse();
-        },
-        reverseHistory: function() {
-            return this.history.reverse();
-        },
     },
     methods: {
         saveTask: function() {
@@ -55,8 +49,8 @@ export default {
             this.inputValue = "";
         },
 
-        finishTask: function( id ) {
-            taskContainer.finishTask( id );
+        finishTask: function( event, id ) {
+            taskContainer.finishTask( event, id );
         }
     },
 

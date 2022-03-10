@@ -1,7 +1,7 @@
 <template>
     <div class="input-body">
-        <input type="text" name="memoBody" id="memoBody" v-model="inputValue" @keydown.enter="parentMethod">
-        <button type="button" @click="parentMethod">Save</button>
+        <input type="text" name="memoBody" id="memoBody" v-model="inputValue" @keydown.enter="emitSaveTask">
+        <button type="button" @click="emitSaveTask">タスクを登録する</button>
     </div>
 </template>
 
@@ -10,7 +10,7 @@ export default {
     name: "InputBody",
     props: {
         value: String,
-        parentMethod: Function,
+        emitSaveTask: Function,
     },
     computed: {
         inputValue: {
@@ -30,10 +30,14 @@ export default {
     margin: 24px auto;
     display: flex;
 
+    #memoBody {
+        width: 300px;
+        padding: 4px 6px;
+    }
+
     button {
         font-size: 1.4rem;
         padding: 2px 16px;
-        margin-left: 8px;
         cursor: pointer;
     }
 }
