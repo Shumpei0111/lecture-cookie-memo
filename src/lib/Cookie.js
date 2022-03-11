@@ -1,17 +1,25 @@
 import Cookies from 'js-cookie';
 
+const HISTORY_KEY = "task-history";
+const TASK_KEY = "task-active";
+const ENABLE_COOKIE_KEY = "enable-cookie";
+
 class CookieManager {
     constructor() {
         // Cookieが使用できるブラウザか確認する
         Cookies.set( "prepare", "set" );
-        this.canUseCookies = false;
-        this.historyKey = "task-history";
-        this.taskKey = "task-active";
+
+        //////////////
+        // use value
+        // enable => "0"
+        // disable => "-1"
+        this.isEnableUseCookieKey = ENABLE_COOKIE_KEY;
+        this.historyKey = HISTORY_KEY;
+        this.taskKey = TASK_KEY;
 
         const getVal = Cookies.get( "prepare" );
         if( getVal ) {
             Cookies.remove( "prepare" );
-            this.canUseCookies = true;
 
         } else {
             alert( "お使いのブラウザではCookieが使用できないため、タスクの履歴を保存できません。ブラウザの設定をご確認ください。" );
@@ -19,8 +27,16 @@ class CookieManager {
         }
     }
 
+    validUseCookie() {
+        return this.checkEnableUseCookie();
+    }
+
+    checkEnableUseCookie() {
+        return Cookies.get( this.isEnableUseCookieKey ) === "0";
+    }
+
     setActiveTask( task ) {
-        if( !this.canUseCookies ) return;
+        if( !this.validUseCookie() ) return;
 
         const _tasks = Cookies.get( this.taskKey );
 
@@ -33,7 +49,7 @@ class CookieManager {
     }
 
     setHistory( history ) {
-        if( !this.canUseCookies ) return;
+        if( !this.validUseCookie() ) return;
 
         const _history = Cookies.get( this.historyKey );
         
@@ -46,6 +62,8 @@ class CookieManager {
     }
 
     loadTasks() {
+        if( !this.validUseCookie() ) return;
+
         const _tasks = Cookies.get( this.taskKey );
         
         if( _tasks ) {
@@ -55,6 +73,8 @@ class CookieManager {
     }
 
     loadHistory() {
+        if( !this.validUseCookie() ) return;
+
         const _history = Cookies.get( this.historyKey );
 
         if( _history ) {
@@ -82,6 +102,14 @@ class CookieManager {
     allClear() {
         this.clearAllTasks();
         this.clearAllHistory();
+    }
+
+    disebleUseCookie() {
+        Cookies.set( this.isEnableUseCookieKey, "-1" );
+    }
+
+    enableUseCookie() {
+        Cookies.set( this.isEnableUseCookieKey, "0" );
     }
 }
 

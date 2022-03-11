@@ -1,5 +1,9 @@
 <template>
     <div id="taskContainer">
+        <div>
+            <label for="enableCookie">Cookieを有効にする</label>
+            <input type="checkbox" id="enableCookie" @change="toggleEnableCookie( $event )" :checked="isEnableCookie">
+        </div>
         <input-body v-model="inputValue" :emit-save-task="saveTask" />
         <div class="app-body">
             <list :all-tasks="allTasks" :emit-finish-task="finishTask" :clear-all-tasks="clearAllTasks" />
@@ -31,6 +35,7 @@ export default {
             inputValue: "",
             allTasks: taskContainer.allTasks,
             history: taskContainer.history,
+            isEnableCookie: false,
         }
     },
     computed: {
@@ -44,6 +49,29 @@ export default {
         },
     },
     methods: {
+        toggleEnableCookie: function( ev ) {
+            if( !ev.target.checked ) {
+                cookieManager.allClear();
+                cookieManager.disebleUseCookie();
+                return;
+            }
+
+            cookieManager.enableUseCookie();
+            cookieManager.setActiveTask( this.allTasks );
+            cookieManager.setHistory( this.history );
+        },
+
+        checkEnableCookie: function() {
+            const canUseCookie = cookieManager.checkEnableUseCookie();
+            console.log(canUseCookie);
+            if( !canUseCookie ) {
+                this.isEnableCookie = false;
+                return;
+            }
+
+            this.isEnableCookie = true;
+        },
+
         saveTask: function() {
             if( this.inputValue === "" ) return;
 
@@ -67,16 +95,18 @@ export default {
         },
         
         initHistory: function() {
+            this.checkEnableCookie();
+
             const loadTasks = cookieManager.loadTasks();
             const loadHistory = cookieManager.loadHistory();
 
-            if( loadTasks && loadTasks.length > 0 || loadTasks ) {
+            if( this.isEnableCookie && loadTasks && loadTasks.length > 0 ) {
                 loadTasks.map( task => {
                     taskContainer.allTasks.push( task );
                 } );
             }
 
-            if( loadHistory && loadHistory.length > 0 || loadHistory ) {
+            if( this.isEnableCookie && loadHistory && loadHistory.length > 0 ) {
                 loadHistory.map( task => {
                     taskContainer.history.push( task );
                 } );
