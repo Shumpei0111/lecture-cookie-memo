@@ -1,8 +1,24 @@
 import Cookies from 'js-cookie';
 
-const HISTORY_KEY = "task-history";
-const TASK_KEY = "task-active";
-const ENABLE_COOKIE_KEY = "enable-cookie";
+/////////////////////////////
+// 設定（できれば別モジュールに切り出してアプリ全体からクラスへ渡す方がいいと思います）
+//
+const Config = {
+    constrains: {
+        HISTORY_KEY: "task-history",
+        TASK_KEY: "task-active",
+        ENABLE_COOKIE_KEY: "enable-cookie",
+    },
+    options: {
+        expires: 1
+    },
+};
+
+const HISTORY_KEY = Config.constrains.HISTORY_KEY;
+const TASK_KEY = Config.constrains.TASK_KEY;
+const ENABLE_COOKIE_KEY = Config.constrains.ENABLE_COOKIE_KEY;
+
+
 
 class CookieManager {
     constructor() {
