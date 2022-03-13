@@ -45,7 +45,7 @@ class CookieManager {
         }
 
         const tasksItem = JSON.stringify( task );
-        Cookies.set( this.taskKey, tasksItem );
+        Cookies.set( this.taskKey, tasksItem, this.cookieOption );
     }
 
     setHistory( history ) {
@@ -58,7 +58,7 @@ class CookieManager {
         }
 
         const historyItem = JSON.stringify( history );
-        Cookies.set( this.historyKey, historyItem );
+        Cookies.set( this.historyKey, historyItem, this.cookieOption );
     }
 
     loadTasks() {
@@ -105,11 +105,12 @@ class CookieManager {
     }
 
     disebleUseCookie() {
-        Cookies.set( this.isEnableUseCookieKey, "-1" );
+        Cookies.set( this.isEnableUseCookieKey, "-1", this.cookieOption );
     }
 
     enableUseCookie() {
-        Cookies.set( this.isEnableUseCookieKey, "0" );
+        console.log(this.cookieOption);
+        Cookies.set( this.isEnableUseCookieKey, "0", this.cookieOption );
     }
 }
 
