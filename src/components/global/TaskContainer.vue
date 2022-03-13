@@ -63,7 +63,6 @@ export default {
 
         checkEnableCookie: function() {
             const canUseCookie = cookieManager.checkEnableUseCookie();
-            console.log(canUseCookie);
             if( !canUseCookie ) {
                 this.isEnableCookie = false;
                 return;

@@ -10,7 +10,13 @@ const Config = {
         ENABLE_COOKIE_KEY: "enable-cookie",
     },
     options: {
-        expires: 1
+        // expires / max-age ... ブラウザがCookieを保存する期限を設定。
+        // ※js-cookieではexpiresを使用してください。
+        // "max-age": 360000,  // 秒（0の場合はSessionCookie扱いになる）
+        expires: 7,    // 日で指定（0の場合は保存されない）
+
+        secure: true,  // HTTPSでしかCookieを送信しないようにする
+        sameSite: "lax" // XSRF攻撃対策 GETリクエストかつ、ブラウザのロケーションバーが変更される時に送られるCookie
     },
 };
 
@@ -32,6 +38,8 @@ class CookieManager {
         this.isEnableUseCookieKey = ENABLE_COOKIE_KEY;
         this.historyKey = HISTORY_KEY;
         this.taskKey = TASK_KEY;
+
+        this.cookieOption = Object.assign( {}, Config.options );
 
         const getVal = Cookies.get( "prepare" );
         if( getVal ) {
