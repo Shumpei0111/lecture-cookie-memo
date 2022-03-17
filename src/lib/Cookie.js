@@ -5,6 +5,7 @@ import Cookies from 'js-cookie';
 //
 const Config = {
     constrains: {
+        LOGGED_IN_KEY: "logged-in",
         HISTORY_KEY: "task-history",
         TASK_KEY: "task-active",
         ENABLE_COOKIE_KEY: "enable-cookie",
@@ -20,6 +21,7 @@ const Config = {
     },
 };
 
+const LOGGED_IN_KEY = Config.constrains.LOGGED_IN_KEY;
 const HISTORY_KEY = Config.constrains.HISTORY_KEY;
 const TASK_KEY = Config.constrains.TASK_KEY;
 const ENABLE_COOKIE_KEY = Config.constrains.ENABLE_COOKIE_KEY;
@@ -31,11 +33,9 @@ class CookieManager {
         // Cookieが使用できるブラウザか確認する
         Cookies.set( "prepare", "set" );
 
-        //////////////
-        // use value
-        // enable => "0"
-        // disable => "-1"
-        this.isEnableUseCookieKey = ENABLE_COOKIE_KEY;
+        this.isEnableUseCookieKey = ENABLE_COOKIE_KEY; // enable => "0" | disable => "-1"
+
+        this.isLoggedInKey = LOGGED_IN_KEY; // true => "0" | false => null
         this.historyKey = HISTORY_KEY;
         this.taskKey = TASK_KEY;
 
@@ -49,6 +49,14 @@ class CookieManager {
             alert( "お使いのブラウザではCookieが使用できないため、タスクの履歴を保存できません。ブラウザの設定をご確認ください。" );
             return;
         }
+    }
+
+    checkValidLoggedIn() {
+        return Cookies.get( this.isLoggedInKey ) === "0";
+    }
+
+    validLoggedIn() {
+        Cookies.set( this.isLoggedInKey, "0" );
     }
 
     validUseCookie() {
