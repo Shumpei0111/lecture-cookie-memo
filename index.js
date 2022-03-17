@@ -5,7 +5,7 @@ const app = protect(
     '/',
     ( username, password ) => safeCompare( username, 'cooptech' ) && safeCompare( password, 'frontend' ),
     {
-        directory: __dirname,
+        directory: __dirname + "/dist",
         realm: 'vercel-basic-auth.node-static-auth',
         onAuthFailed: res => {
             res.end('Restricted area, please login (cooptec:frontend).');
